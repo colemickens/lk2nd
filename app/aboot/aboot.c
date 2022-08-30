@@ -3946,6 +3946,9 @@ void aboot_init(const struct app_descriptor *app)
 
 	memset(display_panel_buf, '\0', MAX_PANEL_BUF_SIZE);
 
+  dprintf(CRITICAL,"1boot_into_fastboot=%d\n", boot_into_fastboot);
+  dprintf(CRITICAL,"1boot_into_recovery=%d\n", boot_into_recovery);
+
 	/* Check if we should do something other than booting up */
 	if (keys_get_state(KEY_VOLUMEUP) && keys_get_state(KEY_VOLUMEDOWN))
 	{
@@ -3965,14 +3968,28 @@ void aboot_init(const struct app_descriptor *app)
 	{
 		if (keys_get_state(KEY_VOLUMEUP))
 			boot_into_recovery = 1;
+	
+    dprintf(CRITICAL,"2boot_into_fastboot=%d\n", boot_into_fastboot);
+	  dprintf(CRITICAL,"2boot_into_recovery=%d\n", boot_into_recovery);
+		dprintf(CRITICAL,"keys_get_state(KEY_HOME)=%d\n", keys_get_state(KEY_HOME));
+	  dprintf(CRITICAL,"keys_get_state(KEY_BACK)=%d\n", keys_get_state(KEY_BACK));
+    dprintf(CRITICAL,"keys_get_state(KEY_VOLUMEDOWN)=%d\n", keys_get_state(KEY_VOLUMEDOWN));
+	
 		if (!boot_into_recovery &&
 			(keys_get_state(KEY_HOME) || keys_get_state(KEY_BACK) || keys_get_state(KEY_VOLUMEDOWN)))
+	  {
+      dprintf(CRITICAL,"3boot_into_fastboot=%d\n", boot_into_fastboot);
+  	  dprintf(CRITICAL,"3boot_into_recovery=%d\n", boot_into_recovery);
 			boot_into_fastboot = true;
+    }
 	}
 	#if NO_KEYPAD_DRIVER
 	if (fastboot_trigger())
 		boot_into_fastboot = true;
 	#endif
+
+      dprintf(CRITICAL,"4boot_into_fastboot=%d\n", boot_into_fastboot);
+  	  dprintf(CRITICAL,"4boot_into_recovery=%d\n", boot_into_recovery);
 
 #if USE_PON_REBOOT_REG
 	reboot_mode = check_hard_reboot_mode();
@@ -4011,6 +4028,9 @@ void aboot_init(const struct app_descriptor *app)
 	}
 #endif
 #endif
+
+      dprintf(CRITICAL,"5boot_into_fastboot=%d\n", boot_into_fastboot);
+  	  dprintf(CRITICAL,"5boot_into_recovery=%d\n", boot_into_recovery);
 
 #if LK2ND_FORCE_FASTBOOT
 	boot_into_fastboot = true;

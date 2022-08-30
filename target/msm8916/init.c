@@ -199,6 +199,8 @@ int target_volume_up()
 	/* Get status of GPIO */
 	status = gpio_status(TLMM_VOL_UP_BTN_GPIO);
 
+	dprintf(CRITICAL, "TLMM_VOL_UP_BTN_GPIO = %d \n", status);
+
 	/* Active low signal. */
 	return !status;
 }
@@ -220,6 +222,9 @@ int target_home()
 
 	/* Get status of GPIO */
 	status = gpio_status(TLMM_EDL_BTN_GPIO);
+	
+	dprintf(CRITICAL, "TLMM_EDL_BTN_GPIO = %d \n", status);
+	dprintf(CRITICAL, "TLMM_EDL_BTN_GPIO-status = %d \n", !status);
 	
 	/* light up green led when edl btn is pressed*/
 	
