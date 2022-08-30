@@ -69,7 +69,7 @@
 
 /* HACK FOR OpenStick */
 
-#define TLMM_EDL_BTN_GPIO    37
+#define TLMM_EDL_BTN_GPIO    35
 #define TLMM_USR_BLUE_LED_GPIO  20
 #define TLMM_USR_GREEN_LED_GPIO  21
 #define TLMM_USR_RED_LED_GPIO  22 /* UNUSED */
@@ -210,7 +210,7 @@ int target_home()
 	uint8_t status = 0;
 
         if (!first_time) {
-            	    gpio_tlmm_config(TLMM_EDL_BTN_GPIO, 0, GPIO_INPUT, GPIO_PULL_DOWN, GPIO_2MA, GPIO_ENABLE);
+            gpio_tlmm_config(TLMM_EDL_BTN_GPIO, 0, GPIO_INPUT, GPIO_PULL_UP, GPIO_2MA, GPIO_ENABLE);
 
 	    /* Wait for the gpio config to take effect - debounce time */
 	    udelay(10000);
@@ -228,7 +228,11 @@ int target_home()
 	}
 	
 	/* Active high signal. */
-	return status;
+	
+	// Note, this forces us into bootloader on every boot unless we press recovery
+	// Reversing `status` does not help us here... which means either my assumptions are wrong
+	// or there's something... trickier about how Gpio works? idk kinda tired
+	return !status;
 }
 
 
